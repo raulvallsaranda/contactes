@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+{% block title %}Contactes{% endblock %}
+{% block body %}
+    <h1>Contactes</h1>
+    <h2>Benvingut al web de contactes.</h2>
+    <p>Pàgina d'inici</p>
+    <p>
+    <img src="{{ asset('img/llibreta.png') }}" alt="llibreta" class="imatgeInici" /><br/>
+    <a href ="{{ path('fitxa_contacte', {'codi': 4}) }}">Fitxa 4</a><br/>
+    <strong>Data:</strong> {{ "now" | date("d/m/Y")}}<br/>
+    </p>
+
+
+{% endblock %}

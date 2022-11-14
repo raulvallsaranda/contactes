@@ -2,13 +2,14 @@
 namespace App\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-class IniciController
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+class IniciController extends AbstractController
 {
 
-    #[Route('/',name:'inici')]
+    #[Route('/' ,name:'inici')]
     public function inici()
     {
-        return new Response("Benvinguda al web de contactes");
+        return $this->render('inici.html.twig');
     }
 }
 ?>

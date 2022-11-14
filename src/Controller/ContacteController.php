@@ -2,8 +2,8 @@
 namespace App\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-class ContacteController
-{
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+class ContacteController extends AbstractController{
     private $contactes = array(
         array("codi" => 1, "nom" => "Salvador Sala",
             "telefon" => "638961244", "email" => "salvasala@simarro.org"),
@@ -16,8 +16,10 @@ class ContacteController
         array("codi" => 5, "nom" => "Sara Sidle",
             "telefon" => "638765434", "email" => "sarasidle@simarro.org"),
     );
+
     #[Route('/contacte/{codi}' ,name:'fitxa_contacte', requirements: ['codi' => '\d+'])]
-    public function fitxa($codi = 1)
+    public function fitxa($codi)
+
     {
         $resultat = array_filter($this->contactes,
             function($contacte) use ($codi)
@@ -25,16 +27,11 @@ class ContacteController
                 return $contacte["codi"] == $codi;
             });
         if (count($resultat) > 0)
-        {
-            $resposta = "";
-            $resultat = array_shift($resultat); #torna el primer element
-            $resposta .= "<ul><li>" . $resultat["nom"] . "</li>" .
-                "<li>" . $resultat["telefon"] . "</li>" .
-                "<li>" . $resultat["email"] . "</li></ul>";
-            return new Response("<html><body>$resposta</body></html>");
-        }
+            return $this->render('fitxa_contacte.html.twig', array(
+                'contacte' => array_shift($resultat)));
         else
-            return new Response("Contacte no trobat");
+            return $this->render('fitxa_contacte.html.twig', array(
+                'contacte' => NULL));
     }
 
     #[Route('/contacte/{text}' ,name:'buscar_contacte')]
@@ -45,17 +42,8 @@ class ContacteController
             {
                 return strpos($contacte["nom"], $text) !== FALSE;
             });
-        $resposta = "";
-        if (count($resultat) > 0)
-        {
-            foreach ($resultat as $contacte)
-                $resposta .= "<ul><li>" . $contacte["nom"] . "</li>" .
-                    "<li>" . $contacte["telefon"] . "</li>" .
-                    "<li>" . $contacte["email"] . "</li></ul>";
-            return new Response("<html><body>" . $resposta . "</body></html>");
-        }
-        else
-            return new Response("No s'han trobat contactes");
+        return $this->render('llista_contactes.html.twig',
+            array('contactes' => $resultat));
     }
 
 }
