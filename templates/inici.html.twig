@@ -5,10 +5,10 @@
     <h2>Benvingut al web de contactes.</h2>
     <p>Pàgina d'inici</p>
     <p>
-    <img src="{{ asset('img/llibreta.png') }}" alt="llibreta" class="imatgeInici" /><br/>
-    <a href ="{{ path('fitxa_contacte', {'codi': 4}) }}">Fitxa 4</a><br/>
-    <strong>Data:</strong> {{ "now" | date("d/m/Y")}}<br/>
+        <img src="{{ asset('img/llibreta.png') }}" alt="llibreta" class="imatgeInici" /><br/>
+        <a href ="{{ path('fitxa_contacte', {'codi': 4}) }}">Fitxa 4</a><br/>
+        <strong>Data:</strong> {{ "now" | date("d/m/Y")}}<br/>
+        <strong>Data paràmetre:</strong> {{ data }}<br/>
+        <strong>Paràmetre amb el format:</strong> {{ data2 }}<br/>
     </p>
-
-
 {% endblock %}
