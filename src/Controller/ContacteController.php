@@ -7,6 +7,14 @@ use App\Service\BDProva;
 use App\Entity\Contacte;
 use App\Entity\Comarca;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\HttpFoundation\Request;
+use App\Form\ContacteType;
+
 class ContacteController extends AbstractController
 {
     private $contactes;
@@ -26,6 +34,46 @@ class ContacteController extends AbstractController
         else
             return $this->render('fitxa_contacte.html.twig',
                 array('contacte' => NULL));
+    }
+
+    #[Route('/contacte/nou', name:'nou_contacte')]
+    public function nou(Request $request, ManagerRegistry $doctrine)
+    {
+        $contacte = new Contacte();
+        /*$contacte->setNom("Frank Gallagher");
+        $contacte->setTelefon("659231544");
+        $contacte->setEmail("frank@simarro.org");*/
+        $formulari = $this->createForm(ContacteType::class, $contacte);
+        $formulari->handleRequest($request);
+        if ($formulari->isSubmitted() && $formulari->isValid())
+        {
+            $contacte = $formulari->getData();
+            $entityManager = $doctrine->getManager();
+            $entityManager->persist($contacte);
+            $entityManager->flush();
+            return $this->redirectToRoute('inici');
+        }
+        return $this->render('nou.html.twig',
+            array('formulari' => $formulari->createView()));
+    }
+
+    #[Route('/contacte/editar/{codi}', name:'editar_contacte', requirements: ['codi' => '\d+'])]
+    public function editar(Request $request, $codi, ManagerRegistry $doctrine)
+    {
+        $repositori = $doctrine->getRepository(Contacte::class);
+        $contacte = $repositori->find($codi);
+        $formulari = $this->createForm(ContacteType::class, $contacte);
+        $formulari->handleRequest($request);
+        if ($formulari->isSubmitted() && $formulari->isValid())
+        {
+            $contacte = $formulari->getData();
+            $entityManager = $doctrine->getManager();
+            $entityManager->persist($contacte);
+            $entityManager->flush();
+            return $this->redirectToRoute('inici');
+        }
+        return $this->render('editar.html.twig',
+            array('formulari' => $formulari->createView()));
     }
 
     #[Route('/contacte/inserir', name:'inserir_contacte')]

@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+{% block title %}Contactes{% endblock %}
+{% block body %}
+    <h1>Editar contacte</h1>
+{# {% form_theme formulari 'bootstrap_5_layout.html.twig' %} #}
+{#    {{ form_start(formulari) }} #}
+    {{ form_start(formulari, {'attr': {'novalidate': 'novalidate'}}) }}
+    {{ form_widget(formulari) }}
+    {{ form_end(formulari) }}
+{% endblock %}
