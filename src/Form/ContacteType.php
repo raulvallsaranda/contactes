@@ -16,7 +16,7 @@ class ContacteType extends AbstractType
             ->add('id', HiddenType::class)
             ->add('nom', TextType::class)
             ->add('telefon', TextType::class)
-            ->add('email', EmailType::class)
+            ->add('email', EmailType::class, array('label' => 'Correu Electrònic'))
             ->add('comarca', EntityType::class, array('class' => Comarca::class,'choice_label' => 'nom',))
             ->add('save', SubmitType::class, array('label' => 'Enviar'));
     }

@@ -18,6 +18,11 @@
         {% endblock %}
     </head>
     <body>
+    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+        <div>
+            Benvingut/a, {{ app.user.username }} <a href ="{{ path('logout') }}">Tancar sessió</a>
+        </div>
+    {% endif %}
         {% block body %}{% endblock %}
     </body>
 </html>
